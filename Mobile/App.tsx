@@ -1,20 +1,23 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-
+import { Home } from "@/screens/Home";
+import { Container } from "@/styles/Global";
+import { SafeAreaView, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { useFonts } from "expo-font";
+import { Inter_400Regular, Inter_700Bold } from "@expo-google-fonts/inter";
 export default function App() {
+  const [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_700Bold,
+  });
+  if (!fontsLoaded) {
+    return <Text>Carregando......</Text>;
+  }
   return (
-    <View style={styles.container}>
-      <Text>Welcome to The Cat API</Text>
+    <SafeAreaView>
       <StatusBar style="auto" />
-    </View>
+      <Container>
+        <Home />
+      </Container>
+    </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
