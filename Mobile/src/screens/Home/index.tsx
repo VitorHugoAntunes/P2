@@ -1,5 +1,5 @@
 import { Button } from "@/components/Button";
-import { HeaderContainer, HeaderTitle } from "./style";
+import { HeaderContainer, HeaderTitle, EmpetyList, Photos } from "./style";
 import axios from "axios";
 import { useState } from "react";
 import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
@@ -29,36 +29,32 @@ export function Home() {
     }
   };
 
+  const textImageComponent =
+    images.length !== 0 ? "Mostar mais fotos" : "Mostrar fotos";
+
   return (
     <FlatList
       ListHeaderComponent={
         <HeaderContainer>
-          <HeaderTitle
-            style={{ padding: 8, textAlign: "center", marginBottom: 10 }}
-          >
-            Fotos
-          </HeaderTitle>
+          <HeaderTitle>Fotos</HeaderTitle>
         </HeaderContainer>
+      }
+      ListEmptyComponent={() =>
+        images ? (
+          <EmpetyList>Clique no botão abixo para carregar as fotos!</EmpetyList>
+        ) : null
       }
       showsVerticalScrollIndicator={false}
       data={images}
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <View>
-          <Image
-            source={{ uri: item.url }}
-            style={{
-              width: "100%",
-              height: 300,
-              marginBottom: 15,
-              borderRadius: 10,
-            }}
-          />
+          <Photos source={{ uri: item.url }} />
         </View>
       )}
       ListFooterComponent={() =>
         !showloading ? (
-          <Button onPress={fetchImages} text="Mostrar mais fotos" />
+          <Button onPress={fetchImages} text={textImageComponent} />
         ) : (
           <ActivityIndicator size="large" color="#0000ff" />
         )

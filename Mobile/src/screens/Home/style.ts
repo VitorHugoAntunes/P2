@@ -8,5 +8,20 @@ export const HeaderContainer = styled.View`
 export const HeaderTitle = styled.Text`
   font-size: 20px;
   font-weight: 700;
-  font-family: "Inter_400Regular";
+  padding: 8px;
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+export const EmpetyList = styled.Text`
+  text-align: center;
+  margin-bottom: 10px;
+`;
+
+export const Photos = styled.Image`
+  width: 100%;
+  height: 300px;
+  margin-bottom: 15px;
+  border-radius: 10px;
+          
 `;
