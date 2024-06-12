@@ -1,8 +1,8 @@
 import { Button } from "@/components/Button";
 import { HeaderContainer, HeaderTitle } from "./style";
-import axios from 'axios';
+import axios from "axios";
 import { useState } from "react";
-import { Image, ScrollView, View } from "react-native";
+import { ActivityIndicator, FlatList, Image, Text, View } from "react-native";
 
 interface ImageProps {
   id: string;
@@ -12,36 +12,57 @@ interface ImageProps {
 }
 
 export function Home() {
+  const [showloading, setShowLoading] = useState(false);
   const [images, setImages] = useState<ImageProps[]>([]);
   const [page, setPage] = useState(1);
 
   const fetchImages = async () => {
     try {
-      const response = await axios.get(`http://10.0.0.100:3000/api/images`);
+      setShowLoading(true);
+      const response = await axios.get(`${process.env.EXPO_PUBLIC_MY_IP}`);
       setImages((prevImages) => [...prevImages, ...response.data.images]);
       setPage(page + 1);
-
-      console.log(response.data.images);
     } catch (error) {
-      console.error('Error fetching images:', error);
+      console.error("Error fetching images:", error);
+    } finally {
+      setShowLoading(false);
     }
   };
 
   return (
-    <ScrollView>
-      <HeaderContainer>
-        <HeaderTitle>Fotos</HeaderTitle>
+    <FlatList
+      ListHeaderComponent={
+        <HeaderContainer>
+          <HeaderTitle
+            style={{ padding: 8, textAlign: "center", marginBottom: 10 }}
+          >
+            Fotos
+          </HeaderTitle>
+        </HeaderContainer>
+      }
+      showsVerticalScrollIndicator={false}
+      data={images}
+      keyExtractor={(item) => item.id}
+      renderItem={({ item }) => (
         <View>
-          {images.map((image) => (
-            <Image
-              key={image.id}
-              source={{ uri: image.url }}
-              style={{ width: 300, height: 300 }}
-            />
-          ))}
+          <Image
+            source={{ uri: item.url }}
+            style={{
+              width: "100%",
+              height: 300,
+              marginBottom: 15,
+              borderRadius: 10,
+            }}
+          />
         </View>
-        <Button onPress={fetchImages} text="Load more" />
-      </HeaderContainer>
-    </ScrollView>
+      )}
+      ListFooterComponent={() =>
+        !showloading ? (
+          <Button onPress={fetchImages} text="Mostrar mais fotos" />
+        ) : (
+          <ActivityIndicator size="large" color="#0000ff" />
+        )
+      }
+    />
   );
 }
