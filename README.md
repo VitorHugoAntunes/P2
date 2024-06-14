@@ -15,4 +15,4 @@
 ```npm run start``` no mobile.
 ```npm run dev``` no backend.
 
-Adicionar EXPO_PUBLIC_MY_IP = http://seuIP/api/images na raiz do projeto mobile.
+Adicionar EXPO_PUBLIC_MY_IP = http://seuIP/api/images na raiz do projeto mobile em um arquivo ```.env```.
